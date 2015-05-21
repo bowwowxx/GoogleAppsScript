@@ -1,0 +1,67 @@
+function onOpen(){ 
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  
+  var allEntries = [ {name: "Authorize", functionName: "authorize"},
+                     {name: "Stop Alerts", functionName: "stopalert"}
+                    ];
+  
+  sheet.addMenu("All Alerts", allEntries);
+}
+
+function authorize(){}
+
+function stopalert(){
+var allTriggers = ScriptApp.getScriptTriggers();
+
+  for(var i=0; i < allTriggers.length; i++) 
+    ScriptApp.deleteTrigger(allTriggers[i]);
+  
+Browser.msgBox("ok", "All messages stop!",Browser.Buttons.OK);  
+}
+
+function sendalert(){ 
+
+  try {
+    var alabel = GmailApp.getUserLabelByName('Alert');
+    var athreads = alabel.getThreads();
+    var now = new Date().getTime();
+    var cale=getCalendar();
+    
+    for(i in athreads){
+      cale.createEvent(athreads[i].getFirstMessageSubject()+": "+athreads[i].getMessages()[0].getFrom(),new Date(now+60000),new Date(now+60000)).removeAllReminders().addSmsReminder(0);
+    }
+    
+    alabel.removeFromThreads(athreads);
+  }
+  
+  catch(err){
+    Logger.log("error :"+ err.toString());
+  }
+}
+
+
+
+function getCalendar(){
+
+  try{
+    var cale=CalendarApp.getOwnedCalendarsByName("Alert")[0];
+    
+    if (!cale){
+      cale=CalendarApp.createCalendar("Alert");
+      return cale;
+    }
+    
+    else{
+      return cale;
+    }
+  }
+  catch(e){
+    Logger.log("error :"+ e.toString());
+  }
+}
+
+
+
+
+
+
