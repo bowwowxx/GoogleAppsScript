@@ -1,3 +1,4 @@
+
 function onOpen(){ 
   var sheet = SpreadsheetApp.getActiveSpreadsheet();
   
@@ -38,7 +39,6 @@ function sendalert(){
     Logger.log("error :"+ err.toString());
   }
 }
-
 
 
 function getCalendar(){
