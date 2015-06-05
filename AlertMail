@@ -1,4 +1,4 @@
-
+//Use google doc app forwarded gmail SMS to your phone
 function onOpen(){ 
   var sheet = SpreadsheetApp.getActiveSpreadsheet();
   
